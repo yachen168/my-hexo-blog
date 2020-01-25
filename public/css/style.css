@@ -4720,12 +4720,13 @@ a.label:focus {
 }
 
 .label-default {
-    background-color: #eeeeee;
+    background-color: #FFF1DF;
 }
 
 .label-default[href]:hover,
 .label-default[href]:focus {
-    background-color: #d5d5d5;
+    background-color: #ffddb0;
+    color: #666;
 }
 
 .label-primary {
