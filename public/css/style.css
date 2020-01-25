@@ -4692,7 +4692,7 @@ input[type="search"] {
 
 .label {
     display: inline-block;
-    padding: .3em .6em;
+    padding: .4em .8em;
     font-size: 75%;
     font-weight: bold;
     line-height: 1;
@@ -4720,7 +4720,8 @@ a.label:focus {
 }
 
 .label-default {
-    background-color: #FFF1DF;
+    background-color: #8AC724;
+    color: #fff;
 }
 
 .label-default[href]:hover,
@@ -4782,7 +4783,12 @@ a.label:focus {
 .panel {
     margin-bottom: 21px;
     background-color: #fff;
-    border: 1px solid #f2f2f2;
+    border: 1px solid rgb(226, 219, 219);
+}
+
+.panel:hover {
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .panel .article-title {
@@ -5981,6 +5987,7 @@ body.no-sidebar .sidebar {
 
 .main .article-list article {
     border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 50px;
 }
 
 .main .article-list article:last-child {
