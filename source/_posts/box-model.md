@@ -1,14 +1,16 @@
 ---
-title: box model
+title: CSS 原理 - Box model
 categories: web
 tags: CSS
 toc: true
 date: 2020-01-30 11:19:42
-thumbnail: https://images.pexels.com/photos/1303087/pexels-photo-1303087.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260
-description: 'jrkfnkjrwnkfj'
+thumbnail: https://i.imgur.com/z4N9CzB.jpg
+
 ---
 
 想像每個元素都是個盒子，而 \<html> 就像是個超級大盒子，裡面裝了許許多多大小不一的盒子，像是 \<div>、\<p>、\<span>、\<button>......等等，而每個盒子由四個部分組成。
+
+<!-- more -->
 
 如下圖所示，box model 由四個部分組成，由內至外依序為
 - content area (內容區)
@@ -32,7 +34,7 @@ description: 'jrkfnkjrwnkfj'
 
 - 不能為負值。
 
-- 預設下，padding 不包含在屬性 width 的範圍，因 box-sizing 預設值為 content-box，當然只包含 最裡面的 content 部分。 
+- 預設下，padding 不包含在屬性 width 的範圍，因 box-sizing 預設值為 content-box，當然只包含最裡面的 content 部分。 
 
 
 <br>
@@ -41,7 +43,7 @@ description: 'jrkfnkjrwnkfj'
 
 ## border (邊框)
 
-> 介於外距 (margin)與內距 (padding) 之間的範圍。
+介於 margin (外距)與 padding(內距) 之間的範圍。
 
 * 可以使用 border 屬性來設置邊框的寬度、樣式與顏色。
   三合一縮寫語法 (三個值的順序可以互換)：
@@ -60,7 +62,7 @@ description: 'jrkfnkjrwnkfj'
 <br>
 
 ## margin (外距)
-margin 圍繞於 border 之外，用於推開元素與其它元素之間的距離，或說是盒子與盒子之間的距離。其特色為
+margin 圍繞於 border 之外，用於推開元素與其它元素之間的距離。其特色為
 
 - 厚度取決於 margin 屬性。
 
@@ -76,11 +78,11 @@ margin 圍繞於 border 之外，用於推開元素與其它元素之間的距�
 <br>
 
 ## box-sizing
-box-sizing 屬性決定如何計算一個元素渲染於畫面上的總寬度與總高度，也就是 size，有 content-box 與 border-box 兩種屬性值。
-
 一個新手常遇見的問題：奇怪，明明指定了元素的 width 與 height，但元素渲染於畫面上的寬度與高度卻比自己設定的值來得大？
 
 這問題通常與 box-sizing 有關。
+
+box-sizing 屬性決定如何計算一個元素渲染於畫面上的總寬度與總高度，也就是 size，有 content-box 與 border-box 兩種屬性值。
 
 
 
@@ -158,7 +160,7 @@ div {
 <br>
 
 
-#### 參考資料
-1. [CSS Box Model Module Level 3](https://www.w3.org/TR/css-box-3/) 
+參考資料
+1. [W3C - CSS Box Model Module Level 3](https://www.w3.org/TR/css-box-3/) 
 2. [MDN - The box model](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/The_box_model)
 3. [MDN - box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)

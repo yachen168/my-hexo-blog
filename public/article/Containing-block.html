@@ -20,20 +20,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>CSS 原理 - Box model - yachen</title>
+<title>CSS 原理 - Containing block - yachen</title>
 
 
-    <meta name="description" content="想像每個元素都是個盒子，而 &lt;html&gt; 就像是個超級大盒子，裡面裝了許許多多大小不一的盒子，像是 &lt;div&gt;、&lt;p&gt;、&lt;span&gt;、&lt;button&gt;…等等，而每個盒子由四個部分組成。">
+    <meta name="description" content="Containing block，中文常被翻譯為包含塊，它其實代表的是一個「區域」，一個由 box model 的 content edge 或 padding edge (若有設定 padding)所圍繞的範圍，它攸關元素的定位、寬高、內距與外距的計算，所以必須清楚知道元素的 containing block 是誰，才不會使畫面失控。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSS 原理 - Box model">
-<meta property="og:url" content="https://yachen168.github.io/article/box-model.html">
+<meta property="og:title" content="CSS 原理 - Containing block">
+<meta property="og:url" content="https://yachen168.github.io/article/Containing-block.html">
 <meta property="og:site_name" content="yachen">
-<meta property="og:description" content="想像每個元素都是個盒子，而 &lt;html&gt; 就像是個超級大盒子，裡面裝了許許多多大小不一的盒子，像是 &lt;div&gt;、&lt;p&gt;、&lt;span&gt;、&lt;button&gt;…等等，而每個盒子由四個部分組成。">
+<meta property="og:description" content="Containing block，中文常被翻譯為包含塊，它其實代表的是一個「區域」，一個由 box model 的 content edge 或 padding edge (若有設定 padding)所圍繞的範圍，它攸關元素的定位、寬高、內距與外距的計算，所以必須清楚知道元素的 containing block 是誰，才不會使畫面失控。">
 <meta property="og:image" content="https://i.imgur.com/z4N9CzB.jpg">
-<meta property="article:published_time" content="2020-01-30T03:19:42.000Z">
-<meta property="article:modified_time" content="2020-02-11T15:58:23.586Z">
+<meta property="article:published_time" content="2020-02-08T18:27:51.000Z">
+<meta property="article:modified_time" content="2020-02-15T13:04:15.514Z">
 <meta property="article:author" content="yachen">
 <meta property="article:tag" content="CSS">
+<meta property="article:tag" content="w3HexSchool">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/z4N9CzB.jpg">
 
@@ -95,7 +96,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/avatar.png" alt="CSS 原理 - Box model" height="28">
+                <img src="/images/avatar.png" alt="CSS 原理 - Containing block" height="28">
             
             </a>
         </div>
@@ -151,7 +152,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="https://i.imgur.com/z4N9CzB.jpg" alt="CSS 原理 - Box model">
+            <img class="thumbnail" src="https://i.imgur.com/z4N9CzB.jpg" alt="CSS 原理 - Containing block">
         </span>
     </div>
     
@@ -159,7 +160,7 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-30T03:19:42.000Z">2020-01-30</time>
+                <time class="level-item has-text-grey" datetime="2020-02-08T18:27:51.000Z">2020-02-09</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/web/">web</a>
@@ -169,7 +170,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    7 minutes read (About 1044 words)
+                    7 minutes read (About 1015 words)
                 </span>
                 
                 
@@ -178,120 +179,80 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                CSS 原理 - Box model
+                CSS 原理 - Containing block
             
         </h1>
         <div class="content">
-            <p>想像每個元素都是個盒子，而 &lt;html&gt; 就像是個超級大盒子，裡面裝了許許多多大小不一的盒子，像是 &lt;div&gt;、&lt;p&gt;、&lt;span&gt;、&lt;button&gt;…等等，而每個盒子由四個部分組成。</p>
+            <p>Containing block，中文常被翻譯為包含塊，它其實代表的是一個「區域」，一個由 box model 的 content edge 或 padding edge (若有設定 padding)所圍繞的範圍，它攸關元素的定位、寬高、內距與外距的計算，所以必須清楚知道元素的 containing block 是誰，才不會使畫面失控。</p>
 <a id="more"></a>
-<p>如下圖所示，box model 由四個部分組成，由內至外依序為</p>
+<p>例如，在元素設定 width、height、padding、margin 屬性時，若屬性值給予的單位為百分比(％)，則將會以該元素的 containing block 為基準去做計算，再例如，元素的 position定位，也與該元素的 containing block 有關。</p>
+<p><img src="https://i.imgur.com/63OK6lN.png" alt="box model"><br>
+<br><br></p>
+<h2 id="如何尋找包含塊："><a class="header-anchor" href="#如何尋找包含塊："></a>如何尋找包含塊：</h2>
+<p>一個容易犯的錯誤是直接將元素的「父層」視為該元素的 containing block，事實上，在有些情況下並非如此，像是 position: absolute 與 fixed 時。大致情況如下：</p>
 <ul>
-<li>content area (內容區)</li>
-<li>padding (內距)</li>
-<li>border (邊框)</li>
-<li>margin (外距)</li>
+<li>
+<p>根元素 &lt;html&gt; 的 containing block 稱為 initial containing block (初始包含塊)，而在連續媒體下，initial containing block 即為 viewport (視口)。<br>
+<br></p>
+</li>
+<li>
+<p>若元素的 <code>position</code> 屬性值為 <code>static</code>、<code>relative</code> 或 <code>sticky</code>，則 containing block 為距離該元素最近的祖先 block container 或 formatting context (格式化上下文)的 <code>contnet edge (內容區邊緣)</code>組成。</p>
+<p>其中，block container 並不完全等於 display: block，像是 display: inline-block 與 list-item 也會形成 block container，這部分有興趣可參考 <a href="https://www.w3.org/TR/css-display-3/#the-display-properties">W3C display 表格</a>。</p>
+<p>至於 formatting context ，其實它只是一個「環境」，大致可分為幾種環境，像是 block formatting context、flex formatting context 或 grid formatting context，之後有機會再介紹。<br>
+<br></p>
+</li>
+<li>
+<p>若元素 <code>position</code> 屬性值為 <code>absolute</code>，則其 containing block 為距離它<code>最近</code>且 <code>position</code> 屬性值<code>非 static</code>（即為 fixed、absolute、relative 或 sticky）的<code>祖先元素</code>的 <code>padding edge(內距邊緣)</code>組成。<br>
+<br></p>
+</li>
+<li>
+<p>若元素 position 屬性值為 <code>fixed</code>，則其 containing block 在連續媒體下為 <code>viewport</code>。<br>
+<br></p>
+</li>
+<li>
+<p>如果 <code>position</code> 屬性值為 <code>absolute</code> 或 <code>fixed</code>，containing block 也可能是由滿足以下條件的<code>最接近祖先元素</code>的內容區邊緣組成：</p>
+<ul>
+<li>transform 或 perspective 屬性值不為 none。</li>
+<li>filter 屬性值不為 none。</li>
 </ul>
-<p><img src="/article/box-model/box-model.svg" alt="box model"></p>
-<h2 id="content-area"><a class="header-anchor" href="#content-area"></a>content area</h2>
-<p>內容區域，也就是盒子裡裝的東西，可能是文字、圖片或是又裝了其它元素(其他盒子)，例如 &lt;div&gt;、&lt;p&gt;、&lt;span&gt;、&lt;button&gt;…等等。</p>
-<br>
-<br>
-<h2 id="padding-內距"><a class="header-anchor" href="#padding-內距"></a>padding (內距)</h2>
-<p>可想像成盒子和其內容物的距離，介於 content area(內容區) 與 border(邊框)之間的部分。其特色為</p>
-<ul>
-<li>
-<p>厚度取決於 padding 屬性，</p>
-</li>
-<li>
-<p>不能為負值。</p>
-</li>
-<li>
-<p>預設下，padding 不包含在屬性 width 的範圍，因 box-sizing 預設值為 content-box，當然只包含最裡面的 content 部分。</p>
-</li>
-</ul>
-<br>
-<br>
-<h2 id="border-邊框"><a class="header-anchor" href="#border-邊框"></a>border (邊框)</h2>
-<p>介於 margin (外距)與 padding(內距) 之間的範圍。</p>
-<ul>
-<li>
-<p>可以使用 border 屬性來設置邊框的寬度、樣式與顏色。<br>
-三合一縮寫語法 (三個值的順序可以互換)：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">border</span>: <span class="selector-tag">border-width</span>｜<span class="selector-tag">border-style</span>｜<span class="selector-tag">border-color</span></span><br></pre></td></tr></table></figure>
-<p>亦可單獨指 定border 的寬度、樣式與顏色。個別屬性如下：</p>
-<ul>
-<li>border-width (邊框寬度)</li>
-<li>border-style (邊框樣式)</li>
-<li>border-color (邊框顏色)<br>
-<br></li>
-</ul>
-</li>
-<li>
-<p>預設情況下，不包含在 width 與 height 的範圍內。</p>
 </li>
 </ul>
 <br>
+<h3 id="來看幾個例子吧"><a class="header-anchor" href="#來看幾個例子吧"></a>來看幾個例子吧</h3>
+<h4 id="例-1"><a class="header-anchor" href="#例-1"></a>例 1.</h4>
+<blockquote>
+<p>找出 &lt;p&gt; 的包含塊，並且計算出 &lt;p&gt; 最終的寬、高、內距與外距。</p>
+</blockquote>
+<p>在此例子中，因為 &lt;p&gt; 的 position 值為預設的 static，故其包含塊為距離它最近的 block container 的 padding edge(內距邊緣)所圍繞範圍，又因 &lt;p&gt; 的 width、 height、margin 與 padding 單位皆為百分比(%)，所以會以 containing block，即 &lt;section&gt; 為基準來計算。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is a paragraph!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">section</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">160px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;   <span class="comment">/* == 400px * .5 = 200px */</span></span><br><span class="line">  <span class="attribute">height</span>: <span class="number">25%</span>;  <span class="comment">/* == 160px * .25 = 40px */</span></span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">5%</span>;   <span class="comment">/* == 400px * .05 = 20px */</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">5%</span>;  <span class="comment">/* == 400px * .05 = 20px */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <br>
-<h2 id="margin-外距"><a class="header-anchor" href="#margin-外距"></a>margin (外距)</h2>
-<p>margin 圍繞於 border 之外，用於推開元素與其它元素之間的距離。其特色為</p>
-<ul>
-<li>
-<p>厚度取決於 margin 屬性。</p>
-</li>
-<li>
-<p>可以是正值或負值，但若為負值，可能會與其它元素重疊。</p>
-</li>
-<li>
-<p>元素本身的背景設定無法渲染至 margin 部分，例如 background-color 或 background-image。</p>
-</li>
-<li>
-<p>不包含在 width 與 height 範圍內。</p>
-</li>
-</ul>
+<h4 id="例-2"><a class="header-anchor" href="#例-2"></a>例 2.</h4>
+<blockquote>
+<p>現在將 &lt;section&gt; 改為 display: inline。<br>
+找出 &lt;p&gt; 的包含塊，並且計算出 &lt;p&gt; 最終的寬度。</p>
+</blockquote>
+<p>在此例子中，&lt;p&gt; 的 position 依舊是預設的 static，但是 &lt;section&gt; 不再是 block container，沒有形成一個格式化上下文，故 &lt;p&gt; 的包含塊為 &lt;body&gt; 內距邊緣所圍範圍。</p>
+<p>&lt;p&gt; 的寬度將以 &lt;body&gt; 為基準計算。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is a paragraph!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">section</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: inline;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;     <span class="comment">/* == half the &lt;body&gt;'s width */</span></span><br><span class="line">  <span class="attribute">height</span>: <span class="number">200px</span>;  <span class="comment">/* <span class="doctag">Note:</span> a percentage would be 0 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <br>
-<br>
-<br>
-<h2 id="box-sizing"><a class="header-anchor" href="#box-sizing"></a>box-sizing</h2>
-<p>一個新手常遇見的問題：奇怪，明明指定了元素的 width 與 height，但元素渲染於畫面上的寬度與高度卻比自己設定的值來得大？</p>
-<p>這問題通常與 box-sizing 有關。</p>
-<p>box-sizing 屬性決定如何計算一個元素渲染於畫面上的總寬度與總高度，也就是 size，有 content-box 與 border-box 兩種屬性值。</p>
-<br>
-<h3 id="一-content-box"><a class="header-anchor" href="#一-content-box"></a>(一) content-box</h3>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">box-sizing</span>: <span class="selector-tag">content-box</span>；</span><br></pre></td></tr></table></figure>
-<p>content-box 為預設值，如同字面上的意思，若該元素可以指定 width 與 height，則在設定 width 或 height 時，其指定的僅為最內層的 content 部分，例如 width: 100px，則代表元素的 content area 寬度為 100px。</p>
-<p>如果同時還設定了 padding 或是 border，則必須再加上 padding 與 border，才是最終渲染於畫面上的寬度或高度。</p>
-<br>
-<p>例如： 給定一個 div 的設定如下：<br>
-<a href="https://codepen.io/yachen/pen/oNvQpgG?editors=1100">codepen 範例連結</a></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: content-box; <span class="comment">/*預設值*/</span></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">10px</span> solid black;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>則在 <code>content-box</code> 下：<br><br>
-最終渲染寬度 ≠ width 200px<br><br>
-而是 ( width 200 + 左右 padding 20*2 + 左右 border 10*2 )px = 260px ;<br></p>
-<p>最終渲染高度 ≠ height 100px<br><br>
-而是( height 100 + 上下 padding 20*2 + 上下 border 10*2 )px = 160px。</p>
-<p><img src="/article/box-model/content-box.png" alt="content-box"></p>
-<br>
-<br>
-<h3 id="二-border-box"><a class="header-anchor" href="#二-border-box"></a>(二) border-box</h3>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">box-sizing</span>: <span class="selector-tag">border-box</span>;</span><br></pre></td></tr></table></figure>
-<p>如同字面上的意思，若該元素可以指定 width 與 height，則 width 和 height 屬性值涵蓋的範圍為 border 以內，也就是 content、padding 和 border，注意，不包括 margin。</p>
-<p>border-box 可以使元素渲染於畫面上的總寬度與總高度的計算變得較直覺簡單，不必再額外加上 padding 和 border，連 bootstrap 也對所有元素做了此設定。</p>
-<br>
-<p>例如： 給定一個 div 的設定如下：<br>
-在 <code>border-box</code> 下：<br><br>
-最終渲染寬度即為 width 200px ;<br><br>
-最終渲染高度即為 height 100px。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">10px</span> solid black;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/article/box-model/border-box.png" alt="border-box"></p>
-<br>
-<br>
-<br>
-<br>
-<p>參考資料</p>
+<h4 id="例-3"><a class="header-anchor" href="#例-3"></a>例 3.</h4>
+<blockquote>
+<p>包含塊有內距(padding)。<br>
+找出 &lt;p&gt; 的包含塊，並且計算出 &lt;p&gt; 的最終寬度、高度、外距與內距。</p>
+</blockquote>
+<p>在此例中，P元素的包含塊是 &lt;section&gt;，因為 &lt;section&gt; 的  position 值非 static。<br>
+&lt;p&gt; 百分值會受其包含塊 &lt;section&gt; 的 padding 所影響。若將包含塊的 box-sizing 值設置為 border-box，就可以避免這個問題。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is a paragraph!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">section</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">160px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">30px</span> <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;   <span class="comment">/* == (400px + 20px + 20px) * 50% = 220px */</span></span><br><span class="line">  <span class="attribute">height</span>: <span class="number">25%</span>;  <span class="comment">/* == (160px + 30px + 30px) * 25% = 55px */</span></span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">5%</span>;   <span class="comment">/* == (400px + 20px + 20px) * 5% = 22px */</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">5%</span>;  <span class="comment">/* == (400px + 20px + 20px) * 5% = 22px */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><br><br><br>
+<br><br></p>
+<p>參考資源</p>
 <ol>
-<li><a href="https://www.w3.org/TR/css-box-3/">W3C - CSS Box Model Module Level 3</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/The_box_model">MDN - The box model</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing">MDN - box-sizing</a></li>
+<li><a href="https://www.w3.org/TR/CSS2/visuren.html#block-boxes">W3C-Containing blocks</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block">MDN-Layout and the containing block</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10220938">每天來點 CSS Specification-Visual Formatting Model - 定義、containing block</a></li>
 </ol>
 
         </div>
@@ -300,7 +261,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/CSS/" rel="tag">CSS</a>
+                    <a class="has-link-grey -link" href="/tags/CSS/" rel="tag">CSS</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
                 </div>
             </div>
         </div>
@@ -318,12 +279,19 @@
     <div class="level post-navigation is-flex-wrap is-mobile">
         
         <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/article/Containing-block.html">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/article/Collapsing-margins.html">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">CSS 原理 - Containing block</span>
+                <span class="level-item">CSS 原理 - Collapsing margins</span>
             </a>
         </div>
         
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/box-model.html">
+                <span class="level-item">CSS 原理 - Box model</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
         
     </div>
 </div>
@@ -341,7 +309,7 @@
     var gitalk = new Gitalk({
         clientID: '55257ba0d3e214c6eb38',
         clientSecret: '2655b53e34f22f8e80ba21478704ab5b7a908bfb',
-        id: 'c27fb167f4363fae967752afe3e559e4',
+        id: '6d00fd94099f399d80d926f3cce7e954',
         repo: 'yachen168.github.io',
         owner: 'yachen168',
         admin: "yachen168",
@@ -463,34 +431,26 @@
                     Catalogue
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#content-area">
+        <a class="is-flex" href="#如何尋找包含塊：">
         <span class="has-mr-6">1</span>
-        <span>content area</span>
-        </a></li><li>
-        <a class="is-flex" href="#padding-內距">
-        <span class="has-mr-6">2</span>
-        <span>padding (內距)</span>
-        </a></li><li>
-        <a class="is-flex" href="#border-邊框">
-        <span class="has-mr-6">3</span>
-        <span>border (邊框)</span>
-        </a></li><li>
-        <a class="is-flex" href="#margin-外距">
-        <span class="has-mr-6">4</span>
-        <span>margin (外距)</span>
-        </a></li><li>
-        <a class="is-flex" href="#box-sizing">
-        <span class="has-mr-6">5</span>
-        <span>box-sizing</span>
+        <span>如何尋找包含塊：</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#一-content-box">
-        <span class="has-mr-6">5.1</span>
-        <span>(一) content-box</span>
+        <a class="is-flex" href="#來看幾個例子吧">
+        <span class="has-mr-6">1.1</span>
+        <span>來看幾個例子吧</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#例-1">
+        <span class="has-mr-6">1.1.1</span>
+        <span>例 1.</span>
         </a></li><li>
-        <a class="is-flex" href="#二-border-box">
-        <span class="has-mr-6">5.2</span>
-        <span>(二) border-box</span>
-        </a></li></ul></li></ul>
+        <a class="is-flex" href="#例-2">
+        <span class="has-mr-6">1.1.2</span>
+        <span>例 2.</span>
+        </a></li><li>
+        <a class="is-flex" href="#例-3">
+        <span class="has-mr-6">1.1.3</span>
+        <span>例 3.</span>
+        </a></li></ul></li></ul></li></ul>
             </div>
         </div>
     </div>
@@ -598,7 +558,7 @@
             <div class="level-start has-text-centered-mobile">
                 <!-- <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/avatar.png" alt="CSS 原理 - Box model" height="28">
+                    <img src="/images/avatar.png" alt="CSS 原理 - Containing block" height="28">
                 
                 </a> -->
                 <p class="is-size-7">
