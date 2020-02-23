@@ -15,7 +15,7 @@ Containing block，中文常被翻譯為包含塊，它其實代表的是一個�
 
 例如，在元素設定 width、height、padding、margin 屬性時，若屬性值給予的單位為百分比(％)，則將會以該元素的 containing block 為基準去做計算，再例如，元素的 position定位，也與該元素的 containing block 有關。
 
-![box model](https://i.imgur.com/63OK6lN.png)
+![box model](./Containing-block/box-model.svg)
 <br></br>
 
 ## 如何尋找包含塊：

@@ -57,7 +57,7 @@ block 須符合相鄰(adjoining)的定義：
   
 ```
 
-![](https://i.imgur.com/lBldC43.png)
+![](./Collapsing-margins/demo.png)
 
 <br></br>
 
@@ -91,7 +91,7 @@ block 須符合相鄰(adjoining)的定義：
     margin-top: 50px;
 }
 ```
-![](https://i.imgur.com/RcJbzfi.png)
+![](./Collapsing-margins/before-margin-collapsing.png)
 
 <br></br>
 
@@ -99,7 +99,7 @@ block 須符合相鄰(adjoining)的定義：
 
 <br></br>
 
-![](https://i.imgur.com/WRZHhxE.png)
+![](./Collapsing-margins/after-margin-collapsing.png)
 
 <br></br>
 

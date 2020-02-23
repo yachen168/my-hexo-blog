@@ -53,7 +53,7 @@ Visual formatting model (視覺格式化模型) 對於排版來說是很重要�
 
 順帶一提，替換元素 (replaced element)，例如 \<img>，display 的預設值為 inline，不論將其 display 屬性值改成什麼，皆不會有 container box，因為它就是路徑來源的圖片，不是用來裝像是 \<span>、\<div> 或其他元素的容器。
 
-![](https://i.imgur.com/Uou6tmF.png)
+![](./display/display.png)
 圖片來源: [W3C](https://www.w3.org/TR/css-display-3/#the-display-properties)
 
 <br>
@@ -76,12 +76,12 @@ Visual formatting model (視覺格式化模型) 對於排版來說是很重要�
 
 vertical-align 屬性可以適用於所有 inline-level boxes，也就是可以操控 display 表上所有會生成 inline-level box 元素的垂直對齊。
 
-![](https://i.imgur.com/8xgks42.png)
+![](./display/vertical-align.png)
 圖片來源：[W3C](https://www.w3.org/TR/css-inline-3/#propdef-vertical-align)
 
 而 text-align 的屬性則是須設定在 inline-level 外層的 block container，它可操控 display 表上所有會生成 inline-level box 元素的水平對齊。
 
-![](https://i.imgur.com/S5Bql3u.png)
+![](./display/text-align.png)
 圖片來源：[W3C](https://www.w3.org/TR/css-text-3/#justification)
 
 <br>
