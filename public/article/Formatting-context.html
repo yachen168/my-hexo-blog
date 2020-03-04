@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html  lang="zh">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156413844-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156413844-3');
+    </script>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>CSS 原理 - Formatting Context - yachen</title>
+
+
+    <meta name="description" content="每個元素都是一個個的盒子(box)，這些盒子在 in flow 下會如何排列就要看該盒子處在什麼樣的佈局環境，而 formatting context (格式化上下文) 指的就是佈局環境，不同類型的佈局環境會有不同的佈局規則，換句話說，處在不同類型佈局環境裡的盒子，排列方式會有所不同。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 原理 - Formatting Context">
+<meta property="og:url" content="https://yachen168.github.io/article/Formatting-context.html">
+<meta property="og:site_name" content="yachen">
+<meta property="og:description" content="每個元素都是一個個的盒子(box)，這些盒子在 in flow 下會如何排列就要看該盒子處在什麼樣的佈局環境，而 formatting context (格式化上下文) 指的就是佈局環境，不同類型的佈局環境會有不同的佈局規則，換句話說，處在不同類型佈局環境裡的盒子，排列方式會有所不同。">
+<meta property="og:image" content="https://i.imgur.com/qmupIlt.png">
+<meta property="article:published_time" content="2020-03-04T07:23:52.000Z">
+<meta property="article:modified_time" content="2020-03-04T18:10:07.263Z">
+<meta property="article:author" content="yachen">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="w3HexSchool">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/qmupIlt.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/avatar.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/avatar.png" alt="CSS 原理 - Formatting Context" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/yachen168">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+        
+            <section class="section">
+                <div class="container">
+                    <div class="columns">
+                        <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+                            
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - Formatting Context">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-04T07:23:52.000Z">2020-03-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/web/">web</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 minutes read (About 1169 words)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                CSS 原理 - Formatting Context
+            
+        </h1>
+        <div class="content">
+            <p>每個元素都是一個個的盒子(box)，這些盒子在 in flow 下會如何排列就要看該盒子處在什麼樣的佈局環境，而 formatting context (格式化上下文) 指的就是佈局環境，不同類型的佈局環境會有不同的佈局規則，換句話說，處在不同類型佈局環境裡的盒子，排列方式會有所不同。</p>
+<a id="more"></a>
+<h2 id="什麼是-Formatting-Context"><a class="header-anchor" href="#什麼是-Formatting-Context"></a>什麼是 Formatting Context</h2>
+<p>先來看一段 W3C 規範對於 formatting context (格式化上下文) 的敘述。<br>
+摘自 <a href="https://www.w3.org/TR/css-display-3/#glossary">W3C</a></p>
+<blockquote>
+<p>A formatting context is the environment into which a set of related boxes are laid out. Different formatting contexts lay out their boxes according to different rules.</p>
+</blockquote>
+<blockquote>
+<p>A box either establishes a new independent formatting context or continues the formatting context of its containing block. The type of formatting context established by the box is determined by its inner display type.</p>
+</blockquote>
+<blockquote>
+<p>Additionally, some types of formatting contexts interleave and co-exist.</p>
+</blockquote>
+<br>
+<p>也就是說，formatting context 指的是一個「佈局環境」，處在什麼佈局環境裡的元素(盒子)，就得遵守什麼環境的佈局規則，盒子也可以自立門戶，建立新的 formatting context，再繼續裝其它盒子，而會<code>建立什麼類型的 formatting context</code>，取決於 display 屬性的 <code>inner display type</code>。可參考先前文章 <a href="https://yachen168.github.io/article/display.html">你所不知道的 display</a>。</p>
+<p>有些類型的 formatting contexts 可以同時交互並存，像是 BFC 與 IFC 或是 FFC 與 IFC 等。<br>
+<br></p>
+<h2 id="Formatting-Context-類型"><a class="header-anchor" href="#Formatting-Context-類型"></a>Formatting Context 類型</h2>
+<p>Formatting context 大致有以下幾種，其中，BFC 與 IFC 對於排版來說最為重要，而除了 BFC 較為特殊之外，其餘的 formatting context 取決於元素的 display 屬性。</p>
+<ul>
+<li>Block Formatting Context (BFC)</li>
+<li>Inline Formatting Context (IFC)</li>
+<li>Flex Formatting Context (FFC)</li>
+<li>Grid Formatting Context (GFC)</li>
+<li>Ruby Formatting Contect (RFC)</li>
+</ul>
+<br>
+<h2 id="Independent-Formatting-Context"><a class="header-anchor" href="#Independent-Formatting-Context"></a>Independent Formatting Context</h2>
+<p>剛提到盒子可以自立門戶，為其後裔元素<code>建立</code>自己的 formatting context，而當一個元素(盒子)建立了獨立的 formatting context，不論所建立的類型是否與該元素所處的 formatting context 相同，都是為其<code>後裔元素</code>建立了一個新的佈局環境，所以其後裔元素的佈局通常不必再遵守該元素所處的佈局環境規則。</p>
+<p>值得留意的是，除了 display 之外，有些屬性也會使元素<code>建立</code>獨立的 formatting context，像是 <code>float</code>、<code>position: absolute</code> 或 <code>fixed</code> 這些會使元素脫離正常流(out-of-flow)的屬性皆會<code>建立</code>獨立的 formatting context。</p>
+<br>
+<h2 id="圖解-Formatting-Context"><a class="header-anchor" href="#圖解-Formatting-Context"></a>圖解 Formatting Context</h2>
+<p>「Formatting context 是個佈局環境，不同的 formatting context 有不同的佈局方式」，用圖形或許可以幫助理解，以下將舉三個例子，主要為 BFC 與 IFC，其他類型的 formatting context 概念皆相同，可以此類推。</p>
+<p>下圖截取部分 W3C 規範中的 display 表格，若對於這個表格感到陌生的讀者，建議先看先前文章 <a href="https://yachen168.github.io/article/display.html">你所不知道的 display</a>。</p>
+<p><img src="./Formatting-context/display.png" alt=""><br>
+圖片來源: <a href="https://www.w3.org/TR/css-display-3/#the-display-properties">W3C</a></p>
+<br>
+<h3 id="Case1-BFC"><a class="header-anchor" href="#Case1-BFC"></a>Case1: BFC</h3>
+<p>&lt;html&gt; 就是個超級大盒子，裡面裝著其他盒子，且會<code>建立</code>一個 BFC，由上方 display 表可知，其後裔元素 &lt;body&gt; 與三個橘色的 block 元素皆會生成 block-level box，且處在 BFC 裡(或說是<code>參與</code> BFC)，所以會呈現垂直排列。</p>
+<p><img src="./Formatting-context/BFC.png" alt=""></p>
+<br>
+<h3 id="Case2-IFC"><a class="header-anchor" href="#Case2-IFC"></a>Case2: IFC</h3>
+<p>由上方 display 表可知，&lt;body&gt; 對內會生成 block container，可以建立 IFC，而其兩個橘色的 inline 後裔元素會生成 inline box(為一種 inline-level box)，且處在此 IFC 中(或說是<code>參與</code>該 IFC)，所以呈現水平排列。</p>
+<p><img src="./Formatting-context/IFC.png" alt=""></p>
+<br>
+<h3 id="Case3-混合"><a class="header-anchor" href="#Case3-混合"></a>Case3: 混合</h3>
+<p>inline-block 元素會生成<code>inline-level box</code>，該元素本身處在 &lt;body&gt; 所建立的 IFC 中(或說是<code>參與</code>該 IFC)，且兩個 inline-block 元素分別為其後裔元素建立了新的獨立佈局環境──<code>BFC</code> 與 <code>IFC</code>，所以其後裔元素<code>不會</code>與 inline-block 元素一同參與外部 IFC。</p>
+<p><img src="./Formatting-context/inline-block.png" alt=""></p>
+<br>
+<br>
+<h2 id="結語"><a class="header-anchor" href="#結語"></a>結語</h2>
+<p>說穿了，formatting context 就真的只是「佈局環境」而已，花了一個篇幅解釋 formatting context 其實是在替後面的文章鋪路，接下來將介紹在排版中最為重要的 block formatting context(BFC)。</p>
+<br>
+<br>
+<br>
+<p><b>參考資料</b><br>
+<a href="https://www.w3.org/TR/css-display-3/#glossary">W3C - Appendix A: Glossary</a><br>
+<a href="https://www.w3.org/TR/css-display-3/#the-display-properties">W3C - Box Layout Modes: the display property</a><br>
+<a href="https://www.w3.org/TR/CSS2/visuren.html#block-boxes">W3C - Block-level elements and block boxes</a><br>
+<a href="https://www.w3.org/TR/CSS2/visuren.html#inline-boxes">W3C - Inline-level elements and inline boxes</a></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/CSS/" rel="tag">CSS</a>, <a class="has-link-grey -link" href="/tags/w3HexSchool/" rel="tag">w3HexSchool</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/LineBox.html">
+                <span class="level-item">CSS 原理 - Line box</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Commentaires</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '55257ba0d3e214c6eb38',
+        clientSecret: '2655b53e34f22f8e80ba21478704ab5b7a908bfb',
+        id: '9c03519ec056a4e351072b08c9c98faf',
+        repo: 'yachen168.github.io',
+        owner: 'yachen168',
+        admin: "yachen168",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+                        </div>
+                        
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-4-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="yachen">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        yachen
+                    </p>
+                    
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Taiwan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Articles
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            6
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Catégorie
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            1
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            2
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/yachen168" target="_blank" rel="noopener">
+                Follow</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/yachen168">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Facebook" href="https://www.facebook.com/profile.php?id=100001269953108">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    Catalogue
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#什麼是-Formatting-Context">
+        <span class="has-mr-6">1</span>
+        <span>什麼是 Formatting Context</span>
+        </a></li><li>
+        <a class="is-flex" href="#Formatting-Context-類型">
+        <span class="has-mr-6">2</span>
+        <span>Formatting Context 類型</span>
+        </a></li><li>
+        <a class="is-flex" href="#Independent-Formatting-Context">
+        <span class="has-mr-6">3</span>
+        <span>Independent Formatting Context</span>
+        </a></li><li>
+        <a class="is-flex" href="#圖解-Formatting-Context">
+        <span class="has-mr-6">4</span>
+        <span>圖解 Formatting Context</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Case1-BFC">
+        <span class="has-mr-6">4.1</span>
+        <span>Case1: BFC</span>
+        </a></li><li>
+        <a class="is-flex" href="#Case2-IFC">
+        <span class="has-mr-6">4.2</span>
+        <span>Case2: IFC</span>
+        </a></li><li>
+        <a class="is-flex" href="#Case3-混合">
+        <span class="has-mr-6">4.3</span>
+        <span>Case3: 混合</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#結語">
+        <span class="has-mr-6">5</span>
+        <span>結語</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Récents
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/article/Formatting-context.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - Formatting Context">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-04T07:23:52.000Z">2020-03-04</time></div>
+                    <a href="/article/Formatting-context.html" class="title has-link-black-ter is-size-6 has-text-weight-normal">CSS 原理 - Formatting Context</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/web/">web</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/LineBox.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - Line box">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-23T03:58:29.000Z">2020-02-23</time></div>
+                    <a href="/article/LineBox.html" class="title has-link-black-ter is-size-6 has-text-weight-normal">CSS 原理 - Line box</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/web/">web</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/display.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - 你所不知道的 display">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-15T08:48:59.000Z">2020-02-15</time></div>
+                    <a href="/article/display.html" class="title has-link-black-ter is-size-6 has-text-weight-normal">CSS 原理 - 你所不知道的 display</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/web/">web</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/Collapsing-margins.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - Collapsing margins">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-11T15:22:02.000Z">2020-02-11</time></div>
+                    <a href="/article/Collapsing-margins.html" class="title has-link-black-ter is-size-6 has-text-weight-normal">CSS 原理 - Collapsing margins</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/web/">web</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/Containing-block.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://i.imgur.com/qmupIlt.png" alt="CSS 原理 - Containing block">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-02-08T18:27:51.000Z">2020-02-09</time></div>
+                    <a href="/article/Containing-block.html" class="title has-link-black-ter is-size-6 has-text-weight-normal">CSS 原理 - Containing block</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/web/">web</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                            
+                    </div>
+                </div>
+            </section>
+            <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <!-- <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/avatar.png" alt="CSS 原理 - Formatting Context" height="28">
+                
+                </a> -->
+                <p class="is-size-7">
+                    &copy;
+                    2020
+                        yachen&nbsp; <br>Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                            
+                </p>
+            </div>
+            <div class="level-end">
+                
+            </div>
+        </div>
+    </div>
+</footer>
+                <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-Hant");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://yachen168.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="Zurück nach oben" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+                    
+                        <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Articles',
+                PAGES: 'Pages',
+                CATEGORIES: 'Catégories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+                            
+</body>
+
+</html>
