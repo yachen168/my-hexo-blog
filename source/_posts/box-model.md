@@ -4,7 +4,7 @@ categories: web
 tags: CSS
 toc: true
 date: 2020-01-30 11:19:42
-thumbnail: https://i.imgur.com/z4N9CzB.jpg
+thumbnail: https://i.imgur.com/qmupIlt.png
 
 ---
 

@@ -6,7 +6,7 @@ tags:
       - w3HexSchool
 toc: true
 date: 2020-02-09 02:27:51
-thumbnail: https://i.imgur.com/z4N9CzB.jpg
+thumbnail: https://i.imgur.com/qmupIlt.png
 ---
 
 Containing block，中文常被翻譯為包含塊，它其實代表的是一個「區域」，一個由 box model 的 content edge 或 padding edge (若有設定 padding)所圍繞的範圍，它攸關元素的定位、寬高、內距與外距的計算，所以必須清楚知道元素的 containing block 是誰，才不會使畫面失控。

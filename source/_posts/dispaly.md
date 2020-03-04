@@ -6,7 +6,7 @@ tags:
       - w3HexSchool
 toc: true
 date: 2020-02-15 16:48:59
-thumbnail: https://i.imgur.com/z4N9CzB.jpg
+thumbnail: https://i.imgur.com/qmupIlt.png
 ---
 
 Visual formatting model (視覺格式化模型) 對於排版來說是很重要的觀念，但不是那麼平易近人且有點抽象，在初次看 [W3C 規範](https://www.w3.org/TR/CSS2/visuren.html) 時一定是霧煞煞，強烈建議先釐清幾個重要名詞的定義，會發現繞來繞去，講的其實都是相同的概念。

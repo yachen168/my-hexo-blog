@@ -17,8 +17,8 @@ textarea {
 @media screen and (min-width: 1280px) {
   .is-1-column .container,
   .is-2-column .container {
-    max-width: 960px;
-    width: 960px;
+    max-width: 1088px;
+    width: 1088px;
   }
 }
 @media screen and (min-width: 1472px) {
@@ -287,7 +287,7 @@ img.thumbnail {
   font-size: 0.85rem !important;
 }
 .is-7by1 {
-  padding-top: 42.8%;
+  padding-top: 30%;
 }
 .is-7by1 img {
   bottom: 0;
@@ -547,4 +547,7 @@ figure.highlight .section {
 .card-content #more {
   position: absolute;
   top: 0;
+}
+.card-content .button.is-link {
+  background-color: #40b1f5;
 }
