@@ -6,7 +6,7 @@ tags:
   - CSS
   - w3HexSchool
 date: 2020-02-23 11:58:29
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 
 Line box 就像筆記本上的線框，一行一行的垂直堆疊，裡面裝著文字或是 inline-level boxes，而我們可以利用 text-align 與 vertical-align 屬性操控 inline-level boxes 在 line box 裡的水平與垂直對齊。

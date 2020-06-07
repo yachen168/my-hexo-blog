@@ -4,7 +4,7 @@ categories: web
 tags: CSS
 toc: true
 date: 2020-02-11 23:22:02
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 ## 什麼是 Collapsing margins？
 

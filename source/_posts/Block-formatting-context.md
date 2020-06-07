@@ -6,7 +6,7 @@ tags:
       - w3HexSchool
 toc: true
 date: 2020-03-12 16:35:37
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 
 或許你沒聽過 Block Formatting Context，但你肯定有用過！其實在切版時，常常會使用到 BFC，只是你沒有意識到而已，如果能夠有意識的使用 BFC，對於版面的掌控非常有幫助。

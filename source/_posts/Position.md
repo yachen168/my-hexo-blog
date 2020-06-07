@@ -4,7 +4,7 @@ categories: web
 tags: CSS
 toc: true
 date: 2020-03-31 20:03:24
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 這篇要介紹的是 position，顧名思義，它與元素的位置或定位方式有關，了解它的各種屬性值肯定是必要的，像是常見的彈跳視窗或固定導覽列，也都需要它。
 <!-- more -->

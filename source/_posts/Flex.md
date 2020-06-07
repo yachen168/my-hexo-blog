@@ -4,7 +4,7 @@ categories: web
 tags: CSS
 toc: true
 date: 2020-05-08 13:32:37
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 
 接下來將介紹 flex，從先前 [formatting context](https://yachen168.github.io/article/Formatting-context.html) 的觀念開始，再詳細介紹每個屬性的用法以及 flex box 伸縮的計算方式。
@@ -106,7 +106,7 @@ flex-direction 共有四個屬性值，會受到`書寫方向 writing-mode` 影�
 <br>
 
 ###  nowrap
-```
+```css=
 flex-wrap: nowrap
 ```
 * `不`換行，為預設值。 
@@ -144,7 +144,7 @@ flex-wrap: wrap-reverse;
 flex-flow: row wrap;
 ```
 上式等同於
-```css
+```css=
 flex-direction: row;   /* 預設值 */
 flex-wrap: wrap;
 ```

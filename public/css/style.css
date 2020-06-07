@@ -539,7 +539,7 @@ figure.highlight .section {
   all: initial;
 }
 .content :not(pre) > code {
-  font-size: 0.9em;
+  font-size: 0.85em;
 }
 .card-content {
   position: relative;
@@ -549,5 +549,9 @@ figure.highlight .section {
   top: 0;
 }
 .card-content .button.is-link {
-  background-color: #40b1f5;
+  background-color: #eee;
+  color: #555;
+}
+.card-content .button.is-link:hover {
+  background-color: #eaeaea;
 }

@@ -6,7 +6,7 @@ tags:
   - w3HexSchool
 toc: true
 date: 2020-03-04 15:23:52
-thumbnail: https://i.imgur.com/qmupIlt.png
+thumbnail: ./images/cover-css.png
 ---
 
 每個元素都是一個個的盒子(box)，這些盒子在 in flow 下會如何排列就要看該盒子處在什麼樣的佈局環境，而 formatting context (格式化上下文) 指的就是佈局環境，不同類型的佈局環境會有不同的佈局規則，換句話說，處在不同類型佈局環境裡的盒子，排列方式會有所不同。
