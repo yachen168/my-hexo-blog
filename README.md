@@ -6,6 +6,7 @@
 <br>
 
 ## JavaScript
+`2020-06-21` [JavaScript 閉包與範圍 ── Execution Context](https://yachen168.github.io/article/JavaScript%E9%96%89%E5%8C%85%E8%88%87%E7%AF%84%E5%9C%8Dexecution-context.html#more)<br>
 `2020-06-04` [三種改變函式內部 this 的方式：apply()、call()、bind()](https://yachen168.github.io/article/%E6%94%B9%E8%AE%8A%E5%87%BD%E5%BC%8F%E7%9A%84this.html)<br>
 
 <br>
