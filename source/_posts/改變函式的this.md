@@ -47,7 +47,7 @@ foo();  // window，其實這裡的 foo() 是 window.foo()
 
 剛提到，`call()` 會呼叫(執行)函式，但若無給第一個參數，則僅會呼叫函式而不會改變 `this` 指向，所以除了用 `foo()` 執行 `foo` 函式之外，也可以透過 `call()` 來呼叫(當然不需要多此一舉)。
 ```javascript=
-foo.call();  // windowf
+foo.call();  // window
 ```
 
 <br>
@@ -216,7 +216,7 @@ console.log(newFoo === foo);   // false
 ```
 <br>
 
-若直接在定時器裡使用匿名 `function(){}` 形式的 callback，則在非嚴格模式下，定時器裡的 `this` 指向的是 `window`。 
+若直接在定時器裡使用匿名 `function(){}` 形式的 callback，定時器裡的 `this` 指向的是 `window`。 
 
 ```javascript=
 const btn = document.querySelector('button');
