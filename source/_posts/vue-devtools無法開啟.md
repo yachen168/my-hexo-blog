@@ -16,7 +16,13 @@ thumbnail: ./images/cover-vue.png
 
 <br>
 
-查了一下，解決辦法是需要手動進行設定，需要在 js 檔案中添加以下程式碼：
+查了一下文件，原因是：
+![](https://i.imgur.com/NY3MZWM.png)
+
+
+<br>
+
+總之，**解決辦法**是需要手動進行設定，需要在 js 檔案中添加以下程式碼：
 ```javascript=
 Vue.config.devtools = true;
 ```
@@ -52,4 +58,4 @@ var app = new Vue(...)
 <br>
 
 **參考資料** <br>
-[GitHub issues](https://github.com/vuejs/vue-devtools/issues/190)
+[Vue 官方文件](https://cn.vuejs.org/v2/api/#devtools)
