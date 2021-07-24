@@ -1,5 +1,5 @@
 ---
-title: React Native 開發環境建置 - Android 篇
+title: React Native 開發環境建置 - Android 篇(上)
 categories: App
 tags: 
       - React Native
@@ -106,11 +106,14 @@ echo $ANDROID_HOME
 
 <br/>
 
-終於!!!! 經過這些繁瑣的設定之後，就可以建立 RN 專案並在 Android Studio 上運行了!!!! 🎉🎉🎉
+終於!!!! 經過這些繁瑣的設定之後，就可以建立 RN 專案並在 Android Studio 上運行了!!!!(下集待續) 🎉🎉🎉
 
-下一篇將繼續介紹如何在模擬器(Android Studio)和實體裝置中運行你的 RN 專案
+<br/>
 
+# 結語
+雖然 RN 建置開發環境的過程很枯燥乏味，但每個步驟都不能少，否則之後很容易出現各種奇怪的問題 🐛。
 
+下一篇 [React Native 開發環境建置 - Android 篇(下)](https://yachen168.github.io/article/rn-hello-world.html#more) 將繼續介紹如何在模擬器(Android Studio)和實體裝置中運行你的 RN 專案！
 
 
 <br/>
